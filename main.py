@@ -1,4 +1,5 @@
 import sys
+import time
 
 from gtts import gTTS
 import tempfile
@@ -12,24 +13,24 @@ def text_to_speech(text, lang='es'):
     return temp_file.name
 
 
-def main():
+def reproducir_audio(archivo):
     dispositivo = 'CABLE Input (VB-Audio Virtual Cable)' if len(
         sys.argv) > 1 else 'Auriculares (2- Razer Nari Ultimate - Game)'
+    print("Reproduciendo el resultado...")
+    pygame.mixer.init(devicename=dispositivo)
+    pygame.mixer.music.load(archivo)
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy():
+        pass
 
-    while (True):
-
-            speech_file = text_to_speech(input("Escribe texto: "))
-
-            print("Reproduciendo el resultado...")
-            pygame.mixer.init(devicename = dispositivo)
-            pygame.mixer.music.load(speech_file)
-            pygame.mixer.music.play()
+    pygame.mixer.quit()
 
 
-            while pygame.mixer.music.get_busy():
-                pass
-
-            pygame.mixer.quit()
+def main():
+    while True:
+        speech_file = text_to_speech(input("Escribe texto: "))
+        time.sleep(0)
+        reproducir_audio(speech_file)
 
 
 if __name__ == "__main__":
